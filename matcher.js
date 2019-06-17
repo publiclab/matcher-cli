@@ -33,6 +33,9 @@ async function vorpalify(args) {
     eval(`commands.${query}()`);
   } else if (eval(`summoner.${query}`)) {
     console.log(eval(`summoner.${query}`));
+    if (query === 'vsnap') {
+      process.exit();
+    }
   } else {
     error(`Invalid command: "${query}", exiting...\n`);
     process.exit();

@@ -56,7 +56,8 @@ async function invoke() {
   }
   await page.goto(`http://${envVars.HOST}:${envVars.PORT}/${envVars.SUB_PATH}`);
   setInterval(async function() {
-    await page.screenshot({path: `${envVars.VIRTUAL_SNAPSHOT_PATH}`}).catch(function(e) {});
+    await page.screenshot({path: `${envVars.VIRTUAL_SNAPSHOT_PATH}`})
+        .catch(function(e) {});
     snapState = true;
   }, 5000);
   page.on('console', (args) => {
