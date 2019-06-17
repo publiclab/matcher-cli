@@ -19,6 +19,7 @@ vorpal
 
           update: Updates matcher environment.
           clear: Clears console, and exits.
+          vsnap: Takes headless screenshot of the browser live-env.
           matches: Outputs pairs of matched key-points.
           corners: Outputs all eligible match points.
          `)
