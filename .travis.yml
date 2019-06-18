@@ -16,7 +16,8 @@ script:
  - npm start vsnap
 after_script:
  - imgur-upload basedir .
- - var=$(imgur-upload vsnap.png)
+ - upload_log=$(imgur-upload vsnap.png)
+ - overall=$" <f> <h3> Travis logs </h3> <pre> Event:${TRAVIS_EVENT_TYPE} <br/> ID:${TRAVIS_JOB_ID} <br/> Job Number:${TRAVIS_JOB_NUMBER} <br/> VSnapLink:${upload_log} </pre> <br/> <img src="${upload_log}"/> "
  - if [ $TRAVIS_PR != false ]; then 
-    ghi comment -vm "${TRAVIS_EVENT_TYPE} ${TRAVIS_JOB_ID} ${TRAVIS_JOB_NUMBER} ${var}" $TRAVIS_PR;
+    ghi comment -vm $overall $TRAVIS_PR;
     fi;
