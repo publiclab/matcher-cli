@@ -1,4 +1,7 @@
 sudo: required
+env: 
+  # - TRAVIS_PR=$TRAVIS_PULL_REQUEST
+  - TRAVIS_PR=2
 language: node_js
 node_js:
  - '8'
@@ -14,4 +17,6 @@ script:
 after_script:
  - imgur-upload basedir .
  - var=$(imgur-upload vsnap.png)
- - if [ $TRAVIS_PULL_REQUEST != false ]; then ghi comment -vm $var $TRAVIS_PULL_REQUEST; else ghi comment -vm $var 2; fi;
+ - if [ $TRAVIS_PR != false ]; then 
+    ghi comment -vm "${TRAVIS_EVENT_TYPE} ${TRAVIS_JOB_ID} ${TRAVIS_JOB_NUMBER} ${var}" $TRAVIS_PR;
+    fi;
