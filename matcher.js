@@ -25,10 +25,11 @@ vorpal
          `)
     .action(vorpalify);
 
-
+// ALT: find a way to include travis env vars in here
+// until then this seems to be a safe approach with
+// no performance loss whatsoever
 if (process.argv[2] === 'vsnap') {
-  vorpalify('vsnap');
-  process.exit();
+  vorpalify({query: 'vsnap'});
 }
 
 async function vorpalify(args) {
