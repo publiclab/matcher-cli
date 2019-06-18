@@ -8,12 +8,11 @@ before_script:
  - npm install
  - curl -sL https://raw.githubusercontent.com/stephencelis/ghi/master/ghi > ghi && chmod 755 ghi && sudo mv ghi /usr/local/bin
  - git config --global ghi.token $GH_TOKEN
- - node ./matcher.unc.min.js
+ - node ./matcher.js
 script:
  - matcher vsnap
 #  remember to process.exit() this
 after_script:
- - exit
  - ghi comment -vm "hi from travis 👋" 2
  - ls out
 # supply user.repo param?
