@@ -25,17 +25,20 @@ vorpal
          `)
     .action(vorpalify);
 
+
+if (process.argv[2] === 'vsnap') {
+  vorpalify('vsnap');
+  process.exit();
+}
+
 async function vorpalify(args) {
   const {query} = args;
   // eslint-disable-next-line no-unused-vars
-  const summoner = await commands.summoner;
+  summoner = await commands.summoner;
   if (eval(`commands.${query}`) !== undefined) {
     eval(`commands.${query}()`);
   } else if (eval(`summoner.${query}`)) {
     console.log(eval(`summoner.${query}`));
-    if (query === 'vsnap') {
-      process.exit();
-    }
   } else {
     error(`Invalid command: "${query}", exiting...\n`);
     process.exit();
