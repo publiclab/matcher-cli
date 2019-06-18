@@ -5,13 +5,13 @@ node_js:
  - '10'
  - '12'
 before_script:
- - npm install
+ - npm i && npm i -g imgur-upload
  - git stash
  - curl -sL https://raw.githubusercontent.com/stephencelis/ghi/master/ghi > ghi && chmod 755 ghi && sudo mv ghi /usr/local/bin
  - git config --global ghi.token $GH_TOKEN
 script:
- - node ./matcher.js vsnap
+ - npm start vsnap
 after_script:
- - ghi comment -vm "hi from travis 👋" 2
-# supply user.repo param?
-# upload to server and push link back to issue
+ - imgur-upload basedir .
+ - var=$(imgur-upload vsnap.png)
+ - if [ $TRAVIS_PULL_REQUEST != false ]; then ghi comment -vm $var $TRAVIS_PULL_REQUEST; else ghi comment -vm $var 2; fi;

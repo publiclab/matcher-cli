@@ -33,6 +33,10 @@ async function invoke() {
   corners=[];
   matches=[];
   bufferInterval=1000;
+  snapState=true;
+  if (process.argv.length>2) {
+    snapState=false;
+  }
   // SHARED-SCOPE UTILS
   function getDistinctCorners(string) {
     if (isCorner(string)) {
@@ -54,13 +58,11 @@ async function invoke() {
     }
   }
   await page.goto(`http://${envVars.HOST}:${envVars.PORT}/${envVars.SUB_PATH}`);
-  await page.screenshot({path: `${envVars.VIRTUAL_SNAPSHOT_PATH}`})
-      .catch(function(e) {});
-  // element?
-  setTimeout(async function() {
+  await setTimeout(async function() {
+    await page.screenshot({path: `${envVars.VIRTUAL_SNAPSHOT_PATH}`})
+        .catch(function(e) {});
     if (process.argv.length > 2) {
-      await page.screenshot({path: `${envVars.VIRTUAL_SNAPSHOT_PATH}`})
-          .catch(function(e) {});
+      snapState = true;
       process.exit();
     }
   }, 5000);
@@ -72,7 +74,7 @@ async function invoke() {
   do {
     await page.waitFor(bufferInterval);
     bufferInterval+=500;
-  } while (!matches.length || !corners.length);
+  } while (!matches.length || !corners.length|| !snapState);
   await browser.close();
   return {
     matches: matches, corners: corners,
