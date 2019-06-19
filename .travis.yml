@@ -1,7 +1,6 @@
 sudo: required
 env: 
-  # - TRAVIS_PR=$TRAVIS_PULL_REQUEST
-  - TRAVIS_PR=2
+ - TRAVIS_PR=$TRAVIS_PULL_REQUEST
 language: node_js
 node_js:
  - '8'
