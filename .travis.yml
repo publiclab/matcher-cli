@@ -1,0 +1,23 @@
+sudo: required
+env: 
+  # - TRAVIS_PR=$TRAVIS_PULL_REQUEST
+  - TRAVIS_PR=2
+language: node_js
+node_js:
+ - '8'
+ - '10'
+ - '12'
+before_script:
+ - npm i && npm i -g imgur-upload-cli
+ - git stash
+ - curl -sL https://raw.githubusercontent.com/stephencelis/ghi/master/ghi > ghi && chmod 755 ghi && sudo mv ghi /usr/local/bin
+ - git config --global ghi.token $GH_TOKEN
+script:
+ - npm start vsnap
+after_script:
+ - imgur-upload basedir .
+ - upload_log=$(imgur-upload vsnap.png)
+ - overall=$" <f> <h3> Travis logs </h3> <pre> Event:${TRAVIS_EVENT_TYPE} <br/> ID:${TRAVIS_JOB_ID} <br/> Job Number:${TRAVIS_JOB_NUMBER} <br/> VSnapLink:${upload_log} </pre> <br/> <img src="${upload_log}"/> "
+ - if [ $TRAVIS_PR != false ]; then 
+    ghi comment -vm $overall $TRAVIS_PR;
+    fi;

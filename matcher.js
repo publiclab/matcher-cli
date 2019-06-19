@@ -19,15 +19,23 @@ vorpal
 
           update: Updates matcher environment.
           clear: Clears console, and exits.
+          vsnap: Takes headless screenshot of the browser live-env.
           matches: Outputs pairs of matched key-points.
           corners: Outputs all eligible match points.
          `)
     .action(vorpalify);
 
+// ALT: find a way to include travis env vars in here
+// until then this seems to be a safe approach with
+// no performance loss whatsoever
+if (process.argv[2] === 'vsnap') {
+  vorpalify({query: 'vsnap'});
+}
+
 async function vorpalify(args) {
   const {query} = args;
   // eslint-disable-next-line no-unused-vars
-  const summoner = await commands.summoner;
+  summoner = await commands.summoner;
   if (eval(`commands.${query}`) !== undefined) {
     eval(`commands.${query}()`);
   } else if (eval(`summoner.${query}`)) {
