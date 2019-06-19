@@ -3,7 +3,6 @@ env:
  - TRAVIS_PR=$TRAVIS_PULL_REQUEST
 language: node_js
 node_js:
- - '8'
  - '10'
  - '12'
 before_script:
