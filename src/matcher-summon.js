@@ -7,40 +7,37 @@ const {ping, error} = require('../utils/matcher-pings').pings;
 const summoner = (function() {
   initiateServer();
   return invoke();
-  // eslint-disable-next-line no-invalid-this
-  // const {summon: self} = this;
-  // return self;
 })();
 
 function initiateServer() {
-  exec(matcherInitQuery,
-      function(e, stdout, stderr) {
-        ping(stdout);
-        error(stderr);
-        if (e) {
-          error(e);
-          process.exit();
-        }
-      });
+  exec(matcherInitQuery, function(e, stdout, stderr) {
+    ping(stdout);
+    error(stderr);
+    if (e) {
+      error(e);
+      process.exit();
+    }
+  });
   ping(`Server\'s up @ http://${envVars.HOST}:${envVars.PORT}\n`);
 }
 
 async function invoke() {
-  const browser = await puppeteer.launch(
-      {args: ['--no-sandbox', '--headless', '--disable-setuid-sandbox']});
+  const browser = await puppeteer.launch({
+    args: ['--no-sandbox', '--headless', '--disable-setuid-sandbox'],
+  });
   const page = await browser.newPage();
   // FUNCTION GLOBALS
-  corners=[];
-  matches=[];
-  bufferInterval=1000;
-  snapState=true;
-  if (process.argv.length>2) {
-    snapState=false;
+  corners = [];
+  matches = [];
+  bufferInterval = 1000;
+  snapState = true;
+  if (process.argv.length > 2) {
+    snapState = false;
   }
   // SHARED-SCOPE UTILS
   function getDistinctCorners(string) {
     if (isCorner(string)) {
-      const truncatedString = (string).substring(8);
+      const truncatedString = string.substring(8);
       const truncatedObject = JSON.parse(truncatedString);
       if (corners.indexOf(truncatedObject) === -1 && corners.length < 500) {
         corners.push(truncatedObject);
@@ -49,17 +46,20 @@ async function invoke() {
   }
   function getDistinctMatches(string) {
     if (isPair(string)) {
-      const truncatedString = (string).substring(6);
+      const truncatedString = string.substring(6);
       const truncatedObject = JSON.parse(truncatedString);
-      if (matches.indexOf(truncatedObject) === -1
-      && matches.length < truncatedObject.population) {
+      if (
+        matches.indexOf(truncatedObject) === -1 &&
+        matches.length < truncatedObject.population
+      ) {
         matches.push(truncatedObject);
       }
     }
   }
   await page.goto(`http://${envVars.HOST}:${envVars.PORT}/${envVars.SUB_PATH}`);
   await setTimeout(async function() {
-    await page.screenshot({path: `${envVars.VIRTUAL_SNAPSHOT_PATH}`})
+    await page
+        .screenshot({path: `${envVars.VIRTUAL_SNAPSHOT_PATH}.png`})
         .catch(function(e) {});
     if (process.argv.length > 2) {
       snapState = true;
@@ -73,12 +73,14 @@ async function invoke() {
   });
   do {
     await page.waitFor(bufferInterval);
-    bufferInterval+=500;
-  } while (!matches.length || !corners.length|| !snapState);
+    bufferInterval += 500;
+  } while (!matches.length || !corners.length || !snapState);
   await browser.close();
   return {
-    matches: matches, corners: corners,
-    vsnap: envVars.VIRTUAL_SNAPSHOT_PATH};
+    matches: matches,
+    corners: corners,
+    vsnap: envVars.VIRTUAL_SNAPSHOT_PATH,
+  };
 }
 
 function isCorner(string) {

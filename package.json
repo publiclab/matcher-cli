@@ -5,9 +5,10 @@
 	"main": "matcher.js",
 	"scripts": {
 		"build:lint": "node_modules/eslint/bin/eslint.js --fix matcher.js src",
-		"build:terser": "node_modules/terser/bin/uglifyjs matcher.js --output matcher.unc.min.js",
-		"build": "npm run build:lint && npm run build:terser",
-		"start": "node matcher.unc.min.js"
+		"build:terser": "node_modules/terser/bin/uglifyjs matcher.js --output matcher.min.js",
+		"start": "node matcher.min.js",
+		"test": "node_modules/jest/bin/jest.js",
+		"build": "npm run build:lint && npm run build:terser && npm test"
 	},
 	"repository": {
 		"type": "git",
@@ -34,11 +35,14 @@
 		"balanced-match": "^1.0.0",
 		"eslint": "^5.16.0",
 		"eslint-config-google": "^0.13.0",
+		"jest": "^24.8.0",
+		"jest-environment-puppeteer": "^4.2.0",
+		"jest-puppeteer": "^4.2.0",
 		"terser": "^4.0.0"
 	},
 	"dependencies": {
-		"@matcher-cli/main": "https://github.com/rexagod/matcher-cli.git#main",
-		"@matcher-core/main": "https://github.com/rexagod/matcher-core.git#cli-dev",
+		"matcher-cli": "https://github.com/publiclab/matcher-cli.git#main",
+		"matcher-core": "https://github.com/publiclab/matcher-core.git#core-experimental",
 		"puppeteer": "^1.17.0",
 		"live-server": "^1.2.1",
 		"node-fetch": "^2.6.0",
