@@ -11,6 +11,7 @@ before_script:
  - curl -sL https://raw.githubusercontent.com/stephencelis/ghi/master/ghi > ghi && chmod 755 ghi && sudo mv ghi /usr/local/bin
  - git config --global ghi.token $GH_TOKEN
 script:
+ - npm run build
  - npm start vsnap
 after_script:
  - imgur-upload basedir .
