@@ -36,8 +36,8 @@ async function invoke() {
   matches=[];
   bufferInterval=1000;
   // SHARED-SCOPE UTILS
-  
-  
+
+
   await page.goto(`http://${envVars.HOST}:${envVars.PORT}/${envVars.SUB_PATH}`);
   page.on('console', (args) => {
     const text = args._text;
@@ -50,14 +50,6 @@ async function invoke() {
   } while (!matches.length || !corners.length);
   await browser.close();
   return {matches: matches, corners: corners};
-}
-
-function isCorner(string) {
-  return /^Corners:/.test(string);
-}
-
-function isPair(string) {
-  return /^Pairs:/.test(string);
 }
 
 exports.summon = {summoner: summoner};
