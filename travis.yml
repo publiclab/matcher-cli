@@ -1,0 +1,11 @@
+language: node_js
+node_js:
+  - 12
+install:
+    
+    - npm install or npm i
+    
+script:
+    -npm start or npm test
+env:
+    Localhost:http://127.0.0.1:9990/
